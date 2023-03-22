@@ -1,16 +1,16 @@
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Tarefa {
     private String titulo;
     private String descricao;
-    private Date dataCriacao;
-    private Date dataConclusao;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataConclusao;
     private boolean status;
 
-    public Tarefa(String titulo, String descricao) {
+    public Tarefa(String titulo, String descricao, LocalDateTime dataCriacao) {
         this.titulo = titulo;
         this.descricao = descricao;
-        this.dataCriacao = new Date();
+        this.dataCriacao = dataCriacao;
         this.status = false;
     }
 
@@ -30,17 +30,24 @@ public class Tarefa {
         this.descricao = descricao;
     }
 
-    public Date getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
+     
+     public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
 
-    public Date getDataConclusao() {
+    public LocalDateTime getDataConclusao() {
         return dataConclusao;
     }
 
-    public void setDataConclusao(Date dataConclusao) {
+    public void setDataConclusao(LocalDateTime dataConclusao) {
         this.dataConclusao = dataConclusao;
-        this.status = true;
+    }
+    
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public boolean isStatus() {
