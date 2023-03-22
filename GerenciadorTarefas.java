@@ -23,6 +23,8 @@ public class GerenciadorTarefas {
         Tarefa novaTarefa = new Tarefa(titulo, descricao, dataCriacao);
         this.tarefasPendentes.add(novaTarefa);
         System.out.println("Tarefa Criada com sucesso!");
+        System.out.println("Pressione ENTER para voltar ao Menu.");
+        String entrada = scanner.nextLine();
         // scanner.nextLine();
 
     }
@@ -32,6 +34,8 @@ public class GerenciadorTarefas {
         // Verifica se há tarefas pendentes
         if (this.tarefasPendentes.isEmpty()) {
             System.out.println("Não há tarefas pendentes para concluir.");
+            System.out.println("Pressione ENTER para voltar ao Menu.");
+            String entrada = scanner.nextLine();
             return;
         }
 
@@ -54,10 +58,10 @@ public class GerenciadorTarefas {
                 tarefa.setDataConclusao(LocalDateTime.now());
                 
                 // Remove a tarefa da lista de tarefas pendentes e adiciona à lista de tarefas concluídas
+                this.tarefasPendentes.tarefa.status(true()
                 this.tarefasPendentes.remove(tarefa);
                 this.tarefasConcluidas.add(tarefa);
-                System.out.println(
-                        "Tarefa \"" + tituloTarefa + "\" concluída em " + tarefa.getDataConclusao() + " com sucesso!");
+                System.out.println("Tarefa \"" + tituloTarefa + "\" concluída em " + tarefa.getDataConclusao() + " com sucesso!");
                 System.out.println("Pressione ENTER para voltar ao Menu.");
                 String entrada = scanner.nextLine();
                 return;
@@ -72,21 +76,39 @@ public class GerenciadorTarefas {
     }
 
     public void exibirTarefasPendentes() {
-        System.out.println("Tarefas pendentes:");
-        for (Tarefa tarefa : tarefasPendentes) {
-            System.out.println("\n===========\n" + "Titulo: " + tarefa.getTitulo() + "\n" + "Descrição: "
-                    + tarefa.getDescricao() + "\nData de Criação: " + tarefa.getDataCriacao() + "\n===========\n");
+        Scanner scanner = new Scanner(System.in);
+           if(!this.tarefasPendentes.isEmpty()){
+                for (Tarefa tarefa : tarefasPendentes) {
+                         System.out.println("\n===========\n" + "Titulo: " + tarefa.getTitulo() + "\n" + "Descrição: "+ tarefa.getDescricao() + "\nData de Criação: " + tarefa.getDataCriacao() + "\n===========\n");
+                         System.out.println("Pressione ENTER para voltar ao Menu.");
+                         String entrada = scanner.nextLine();
+               
         }
     }
+                       else{
+                       System.out.println("Não há tarefas pendentes.");
+                       System.out.println("Pressione ENTER para voltar ao Menu.");
+                       String entrada = scanner.nextLine();
+                       return;
+        }
+
+  }
 
     public void exibirTarefasConcluidas() {
+        Scanner scanner = new Scanner(System.in);
+        if(!this.tarefasPendentes.isEmpty()){
         System.out.println("Tarefas concluídas:");
         for (Tarefa tarefa : tarefasConcluidas) {
-            System.out.println("\n===========\n" + "Titulo: " + tarefa.getTitulo() + "\n" + "Descrição: "
-                    + tarefa.getDescricao() + "\nData de Conclusão: " + tarefa.getDataConclusao() + "\n===========\n");
+            System.out.println("\n===========\n" + "Titulo: " + tarefa.getTitulo() + "\n" + "Descrição: " + tarefa.getDescricao() + "\nData de Conclusão: " + tarefa.getDataConclusao() + "\n===========\n");
         }
     }
-
+          else{
+              System.out.println("Não há tarefas Concluídas.");
+              System.out.println("Pressione ENTER para voltar ao Menu.");
+              String entrada = scanner.nextLine();
+              return; 
+   }
+}
     public void limparConsole() {
         Console console = System.console();
         if (console != null) {
