@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class GerenciadorTarefas {
     private ArrayList<Tarefa> tarefasPendentes;
@@ -15,6 +16,7 @@ public class GerenciadorTarefas {
     }
 
     public void concluirTarefa(Tarefa t) {
+        t.setDataConclusao(new Date());
         this.tarefasPendentes.remove(t);
         this.tarefasConcluidas.add(t);
     }
