@@ -1,13 +1,16 @@
 import java.time.LocalDateTime;
 
 public class Tarefa {
+    private int id;
     private String titulo;
     private String descricao;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataConclusao;
     private boolean status;
+    
 
-    public Tarefa(String titulo, String descricao, LocalDateTime dataCriacao) {
+    public Tarefa(int id, String titulo, String descricao, LocalDateTime dataCriacao) {
+        this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.dataCriacao = dataCriacao;
@@ -52,5 +55,11 @@ public class Tarefa {
 
     public boolean isStatus() {
         return status;
+    }
+     public int getId() {
+        return this.id;
+    }
+    public void setId(int id){
+         this.id=id;
     }
 }
