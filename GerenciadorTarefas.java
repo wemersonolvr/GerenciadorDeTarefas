@@ -31,14 +31,20 @@ public class GerenciadorTarefas {
         }
     }
         Scanner scanner = new Scanner(System.in);
+        String nomeUsuario = CadastrarUsuario();
+        String nomeArquivo = nomeUsuario + ".txt";
         System.out.println("Digite o título de sua tarefa: ");
-        String titulo = scanner.nextLine();
+        if (scanner.hasNextLine()) {
+             String titulo = scanner.nextLine();
+}
+        //String titulo = scanner.nextLine();
         System.out.println("Digite a descrição de sua tarefa: ");
         String descricao = scanner.nextLine();
         // adiciona a data atual como data de criação
         LocalDateTime dataCriacao = LocalDateTime.now();
         Tarefa novaTarefa = new Tarefa(id, titulo, descricao, dataCriacao);
         this.tarefasPendentes.add(novaTarefa);
+        salvarTarefas(nomeArquivo);
         System.out.println("Tarefa Criada com sucesso!");
         System.out.println("Pressione ENTER para voltar ao Menu.");
         String entrada = scanner.nextLine();
@@ -136,8 +142,10 @@ public class GerenciadorTarefas {
             System.out.flush();
         }
     }
-      public void salvarTarefas(String nomeArquivo) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
+      public void salvarTarefas(String nomeUsuario) {
+            String nomeArquivo = nomeUsuario + ".txt"; // Altera o nome do arquivo para incluir o nome do usuário
+            File arquivo = new File(nomeArquivo);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo))) {
             // Escreve as tarefas pendentes no arquivo
             for (Tarefa tarefa : this.tarefasPendentes) {
                 writer.write("PENDENTE;");
@@ -161,8 +169,28 @@ public class GerenciadorTarefas {
             System.err.println("Erro ao salvar as tarefas no arquivo " + nomeArquivo + ": " + e.getMessage());
         }
     }
-
-public void carregarTarefas(String nomeArquivo) {
+    
+   public String CadastrarUsuario(){
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Olá! Seja bem-vindo ao seu gerenciador de tarefas.\nQual o seu nome?");
+    String nomeUsuario = scanner.nextLine();
+    scanner.close();
+    
+    File arquivo = new File(nomeUsuario + ".txt"); // Cria um objeto File com o nome do arquivo
+    if (!arquivo.exists()) { // Verifica se o arquivo não existe
+        try {
+            arquivo.createNewFile(); // Cria um novo arquivo
+            System.out.println("Usuário cadastrado com sucesso!");
+        } catch (IOException e) {
+            System.err.println("Erro ao cadastrar usuário: " + e.getMessage());
+        }
+    } else {
+        System.out.println("Usuário já cadastrado.");
+    }
+    return nomeUsuario;
+   }
+}
+/*public void carregarTarefas(String nomeArquivo) {
         try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
@@ -172,11 +200,11 @@ public void carregarTarefas(String nomeArquivo) {
                 String descricao = campos[2];
                 LocalDateTime dataCriacao = LocalDateTime.parse(campos[3]);
                 if (status.equals("PENDENTE")) {
-                    Tarefa tarefa = new Tarefa( titulo, descricao, dataCriacao);
+                    Tarefa carregartarefa = new Tarefa(titulo, descricao, dataCriacao);
                     this.tarefasPendentes.add(tarefa);
                 } else if (status.equals("CONCLUIDA")) {
                     LocalDateTime dataConclusao = LocalDateTime.parse(campos[4]);
-                    Tarefa tarefa = new Tarefa(titulo, descricao, dataCriacao);
+                    Tarefa carregartarefa = new Tarefa(titulo, descricao, dataCriacao);
                     tarefa.setDataConclusao(dataConclusao);
                     this.tarefasConcluidas.add(tarefa);
                 }
@@ -207,3 +235,4 @@ public void carregarTarefas(String nomeArquivo) {
     }
 }
 }
+*/
