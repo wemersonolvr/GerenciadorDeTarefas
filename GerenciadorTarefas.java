@@ -31,25 +31,19 @@ public class GerenciadorTarefas {
         }
     }
         Scanner scanner = new Scanner(System.in);
-        String nomeUsuario = CadastrarUsuario();
-        String nomeArquivo = nomeUsuario + ".txt";
         System.out.println("Digite o título de sua tarefa: ");
-        if (scanner.hasNextLine()) {
-             String titulo = scanner.nextLine();
-}
-        //String titulo = scanner.nextLine();
+        String titulo = scanner.nextLine();
         System.out.println("Digite a descrição de sua tarefa: ");
         String descricao = scanner.nextLine();
         // adiciona a data atual como data de criação
         LocalDateTime dataCriacao = LocalDateTime.now();
         Tarefa novaTarefa = new Tarefa(id, titulo, descricao, dataCriacao);
         this.tarefasPendentes.add(novaTarefa);
-        salvarTarefas(nomeArquivo);
         System.out.println("Tarefa Criada com sucesso!");
         System.out.println("Pressione ENTER para voltar ao Menu.");
         String entrada = scanner.nextLine();
         // scanner.nextLine();
-
+        scanner.close();
     }
 
     public void concluirTarefa() {
@@ -98,6 +92,7 @@ public class GerenciadorTarefas {
             // System.out.println("Tarefa \"" + tituloTarefa + "\" não encontrada.");
             // }
         }
+        scanner.close();
 
     }
 
@@ -117,7 +112,7 @@ public class GerenciadorTarefas {
                        String entrada = scanner.nextLine();
                        return;
         }
-
+      scanner.close();
   }
 
     public void exibirTarefasConcluidas() {
@@ -134,6 +129,7 @@ public class GerenciadorTarefas {
               String entrada = scanner.nextLine();
               return; 
    }
+             scanner.close();
 }
     public void limparConsole() {
         Console console = System.console();

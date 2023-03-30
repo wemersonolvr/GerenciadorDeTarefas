@@ -7,6 +7,9 @@ import java.util.Scanner;
         Scanner scanner = new Scanner(System.in);
         int opcao = 0;
         
+        String nomeUsuario = gerenciador.CadastrarUsuario();
+        String nomeArquivo = nomeUsuario + ".txt";
+        
         while (opcao != 5) {
             System.out.println("=== Menu ===");
             System.out.println("1. Criar nova tarefa");
@@ -16,12 +19,13 @@ import java.util.Scanner;
             System.out.println("5. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            //scanner.nextLine();
             
+           
          
             switch (opcao) {
                 case 1:
                    gerenciador.adicionarTarefa();
+                   gerenciador.salvarTarefas(nomeArquivo);
                    break;
                 case 2:
                    gerenciador.concluirTarefa();
