@@ -7,8 +7,8 @@ public class Tarefa {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataConclusao;
     private boolean status;
-    
 
+    //construtor da classe Tarefa
     public Tarefa(int id, String titulo, String descricao, LocalDateTime dataCriacao) {
         this.id = id;
         this.titulo = titulo;
@@ -17,6 +17,7 @@ public class Tarefa {
         this.status = false;
     }
 
+    //respectivos getters and setters
     public String getTitulo() {
         return titulo;
     }
@@ -36,8 +37,8 @@ public class Tarefa {
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
-     
-     public void setDataCriacao(LocalDateTime dataCriacao) {
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
@@ -48,7 +49,7 @@ public class Tarefa {
     public void setDataConclusao(LocalDateTime dataConclusao) {
         this.dataConclusao = dataConclusao;
     }
-    
+
     public void setStatus(boolean status) {
         this.status = status;
     }
@@ -56,10 +57,12 @@ public class Tarefa {
     public boolean isStatus() {
         return status;
     }
-     public int getId() {
+
+    public int getId() {
         return this.id;
     }
-    public void setId(int id){
-         this.id=id;
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
