@@ -56,6 +56,7 @@ public class GerenciadorTarefas {
                 case 1:
                     adicionarTarefa();
 
+
                     break;
                 case 2:
                     concluirTarefa();
