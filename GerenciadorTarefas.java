@@ -22,7 +22,7 @@ public class GerenciadorTarefas {
     }
 
     // método do gerenciador de tarefas em si, onde o usuário realiza as tarefas e
-    // conclui as tarefas
+    // conclui as tarefas do codigo
     public void iniciarGerenciador() {
         int opcao = 0;
         Scanner scanner = new Scanner(System.in);
@@ -170,7 +170,8 @@ public class GerenciadorTarefas {
         }
     }
 
-    // método em que cadastra ou carrega as tarefas do usuário
+    // método em que cadastra 
+    //ou carrega as tarefas do usuário
     public String cadastrarUsuario() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Digite o seu nome de usuário: ");
