@@ -235,7 +235,7 @@ public class GerenciadorTarefas {
             leitor.close();
     }
 
-    //método que cria novas pastas
+    //método que cria a pasta usuário para salvar as tarefas de cada usuário
     public void criarPasta() {
         File folder = new File("usuarios");
         if (!folder.exists()) {
