@@ -31,6 +31,7 @@ Após a instalação, execute o gerenciador de tarefas com o seguinte comando: j
 - Busca pela palavra desejada em alguma tarefa.
 - Edição de Tarefa.
 - Listagem de todas as tarefas pendentes e concluídas.
+- Permanência de suas tarefas, salvando-as em arquivos para que você as possa checar e modificar sempre que quiser.
 - Interface de linha de comando simples e fácil de usar.
 
 ## Contribuição
