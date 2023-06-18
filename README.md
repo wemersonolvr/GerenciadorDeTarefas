@@ -1,6 +1,7 @@
 # Meu Gerenciador de Tarefas em Java
 
 Um gerenciador de tarefas simples e eficiente em Java para ajudar você a organizar suas atividades diárias.
+Criado em colaboração com @DaviBertoni e @otaviotiltado45 .
 
 ## Índice
 - [Instalação](#instalação)
