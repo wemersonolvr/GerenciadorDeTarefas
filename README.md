@@ -25,8 +25,8 @@ Após a instalação, execute o gerenciador de tarefas com o seguinte comando: j
 - Para marcar uma tarefa como concluída, insira o número de ID da tarefa correspondente e pressione Enter.
 
 ## Recursos
-- Adição, remoção e conclusão de tarefas.
-- Adição de subtarefa as Tarefas.
+- Adição e conclusão de tarefas.
+- Adicionar subtarefa nas Tarefas.
 - Filtragem por categoria.
 - Busca pela palavra desejada em alguma tarefa.
 - Edição de Tarefa.
