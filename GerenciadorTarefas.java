@@ -70,7 +70,7 @@ public class GerenciadorTarefas {
         scanner.close();
     }
 
-    //método que processa a opção selecionada pelo o usuário e executa seu respectivo método
+    //método que processa a opção selecionada pelo usuário e executa seu respectivo método
     private void executarOpcao(int opcao) {
         switch (opcao) {
             case 1:
