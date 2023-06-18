@@ -1,4 +1,4 @@
-# Meu Gerenciador de Tarefas em Java
+# Gerenciador de Tarefas em Java
 
 Um gerenciador de tarefas simples e eficiente em Java para ajudar você a organizar suas atividades diárias.
 Criado especialmente para uma atividade acadêmica na disciplina de Projeto orientado a objetos(POO) no curso de Análise e desenvolvimento de sistemas, na faculdade Faminas no Campus de Muriaé.
