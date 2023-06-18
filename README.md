@@ -21,7 +21,7 @@ Criado especialmente para uma atividade acadêmica na disciplina de Projeto orie
 Após a instalação, execute o gerenciador de tarefas com o seguinte comando: java Main.
 
 ### Exemplos de uso
-- Para adicionar uma nova tarefa, digite o nome da tarefa e pressione Enter, você também poderá adicionar descrição e categoria de sua tarefa.
+- Para adicionar uma nova tarefa, digite o nome da tarefa e pressione Enter, você também poderá adicionar a descrição e a categoria de sua tarefa.
 - Para marcar uma tarefa como concluída, insira o número de ID da tarefa correspondente e pressione Enter.
 
 ## Recursos
