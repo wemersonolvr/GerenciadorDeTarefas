@@ -27,7 +27,7 @@ Após a instalação, execute o gerenciador de tarefas com o seguinte comando: j
 ## Recursos
 - Adição, remoção e conclusão de tarefas.
 - Adição de subtarefa as Tarefas.
-- Filtragem por categoria
+- Filtragem por categoria.
 - Busca pela palavra desejada em alguma tarefa.
 - Edição de Tarefa.
 - Listagem de todas as tarefas pendentes e concluídas.
