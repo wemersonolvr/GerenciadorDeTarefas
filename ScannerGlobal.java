@@ -20,4 +20,13 @@ public class ScannerGlobal {
     public static void close() {
         scanner.close();
     }
+    public static boolean hasNextInt(){
+        return scanner.hasNextInt();
+    }
+    
+    public static void pressioneEnterParaContinuar() {
+        System.out.println("Pressione ENTER para continuar...");
+        scanner.nextLine();
+    }
+
 }

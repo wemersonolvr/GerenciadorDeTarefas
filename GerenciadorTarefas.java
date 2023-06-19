@@ -21,29 +21,30 @@ public class GerenciadorTarefas {
         this.tarefasConcluidas = new ArrayList<>();
     }
 
-    // método do gerenciador de tarefas em si, onde o usuário realiza as tarefas e conclui as tarefas do codigo
+    // método do gerenciador de tarefas em si, onde o usuário realiza as tarefas e
+    // conclui as tarefas do codigo
     public void iniciarGerenciador() {
         criarPastaSenhas();
         criarPasta();
         String nomeUsuario = cadastrarUsuario();
-        String nomeArquivo = nomeUsuario + ".txt";
+        String nomeArquivo = nomeUsuario + ".poo";
         try {
             System.out.println("\nCarregando Tarefas...\n");
             carregarTarefas(nomeArquivo);
-            System.out.println("Suas Tarefas foram carregadas.\n\n");
+            System.out.println("Suas Tarefas foram carregadas.");
         } catch (IOException e) {
             System.out.println("Não foi possível Carregar suas Tarefas e/ou não existem.");
         }
         exibirMenu(nomeArquivo);
     }
-    
-    //método que exibe o menu do gerenciador de tarefas
+
+    // método que exibe o menu do gerenciador de tarefas
     private void exibirMenu(String nomeArquivo) {
         int opcao = -1;
         Scanner scanner = new Scanner(System.in);
 
         do {
-            System.out.println("=== Menu ===");
+            System.out.println("\n\n=== Menu ===");
             System.out.println("1. Criar nova tarefa");
             System.out.println("2. Criar subtarefa de tarefa");
             System.out.println("3. Concluir tarefa");
@@ -51,7 +52,7 @@ public class GerenciadorTarefas {
             System.out.println("5. Exibir tarefas concluídas");
             System.out.println("6. Buscar palavra(s) na(s) tarefa(s)");
             System.out.println("7. Filtrar por categoria");
-            System.out.println("8. Editar Tarefa");
+            System.out.println("8. Editar Tarefa(BÔNUS)");
             System.out.println("9. Sair e salvar");
             System.out.println("============");
             System.out.print("Escolha uma opção: ");
@@ -70,7 +71,8 @@ public class GerenciadorTarefas {
         scanner.close();
     }
 
-    //método que processa a opção selecionada pelo usuário e executa seu respectivo método
+    // método que processa a opção selecionada pelo o usuário e executa seu
+    // respectivo método
     private void executarOpcao(int opcao) {
         switch (opcao) {
             case 1:
@@ -121,7 +123,7 @@ public class GerenciadorTarefas {
         this.tarefasPendentes.add(novaTarefa);
         System.out.println("Tarefa Criada com sucesso!");
     }
-    
+
     // método para incrementação de ID das tarefas após criadas
     private int proximoId() {
         int maiorId = 0;
@@ -138,12 +140,20 @@ public class GerenciadorTarefas {
         return maiorId + 1;
     }
 
-    //método para adicionar subtarefa(s) as tarefas
+    // método para adicionar subtarefa(s) as tarefas
     public void adicionarSubtarefa() {
         exibirTarefasPendentes();
-        System.out.print("Digite o ID da tarefa à qual deseja adicionar a subtarefa: ");
-        int idTarefaPai = ScannerGlobal.nextInt();
-        ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
+        int idTarefaPai;
+        while (true) {
+            System.out.print("Digite o ID da tarefa à qual deseja adicionar a subtarefa: ");
+            idTarefaPai = lerNumeroInteiro();
+            if (verificarIdTarefaPai(idTarefaPai)) {
+                break;
+            } else {
+                System.out.println("O ID da tarefa pai não existe. Por favor, digite novamente.");
+            }
+        }
+        // ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
         System.out.print("Digite o título da subtarefa: ");
         String titulo = ScannerGlobal.nextLine();
         System.out.print("Digite a descrição da subtarefa: ");
@@ -152,14 +162,24 @@ public class GerenciadorTarefas {
         Tarefa subtarefa = new Tarefa(idTarefaPai, titulo, descricao, dataCriacao, " ");
         // Adicionar a subtarefa à tarefa pai (procurar pelo ID da tarefa pai)
         adicionarSubtarefaATarefaPai(idTarefaPai, subtarefa);
-        System.out.println("\nSubtarefa criada com sucesso!\n\n");
+        System.out.println("\nSubtarefa criada com sucesso!\n");
+    }
+
+    private boolean verificarIdTarefaPai(int id) {
+        for (Tarefa tarefa : tarefasPendentes) {
+            if (tarefa.getId() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // método para concluir as Tarefas
     private void concluirTarefa() {
         exibirTarefasPendentes();
-        System.out.println("Digite o ID da tarefa que deseja concluir: ");
-        int id = ScannerGlobal.nextInt();
+        System.out.print("Digite o ID da tarefa que deseja concluir: ");
+        int id = lerNumeroInteiro();
+        ScannerGlobal.nextLine(); // Consumir a nova linha pendente
         boolean tarefaEncontrada = false;
         for (Tarefa tarefa : this.tarefasPendentes) {
             if (tarefa.getId() == id) {
@@ -188,6 +208,7 @@ public class GerenciadorTarefas {
             exibirTarefaComSubtarefas(tarefa, 0);
         }
     }
+
     // método para a exibição das tarefas concluídas
     private void exibirTarefasConcluidas() {
         if (this.tarefasConcluidas.isEmpty()) {
@@ -227,7 +248,8 @@ public class GerenciadorTarefas {
         System.out.println(prefixo + "\n\n===========\n" + prefixo + "ID: " + tarefa.getId()
                 + prefixo + "\nTítulo: " + tarefa.getTitulo() + "\n" + prefixo + "Descrição: "
                 + tarefa.getDescricao() + "\n" + prefixo + "Categoria: " + tarefa.getCategoria() + "\n"
-                + prefixo + dataLabel + ": " + (dataLabel.equals("Data de Criação") ? tarefa.getDataCriacao() : tarefa.getDataConclusao())
+                + prefixo + dataLabel + ": "
+                + (dataLabel.equals("Data de Criação") ? tarefa.getDataCriacao() : tarefa.getDataConclusao())
                 + "\n" + prefixo + "Concluída: " + (tarefa.isStatus() ? "Sim" : "Não")
                 + "\n" + prefixo + "===========");
     }
@@ -238,17 +260,17 @@ public class GerenciadorTarefas {
         ArrayList<Tarefa> tarefasEncontradas = new ArrayList<>();
         for (Tarefa tarefa : tarefasPendentes) { // Verifica tarefas pendentes
             if (tarefa.getTitulo().toLowerCase().contains(stringChave) ||
-                tarefa.getDescricao().toLowerCase().contains(stringChave) ||
-                tarefa.getCategoria().toLowerCase().contains(stringChave) ||
-                contemPalavraSubtarefas(tarefa.getSubtarefas(), stringChave)) {
+                    tarefa.getDescricao().toLowerCase().contains(stringChave) ||
+                    tarefa.getCategoria().toLowerCase().contains(stringChave) ||
+                    contemPalavraSubtarefas(tarefa.getSubtarefas(), stringChave)) {
                 tarefasEncontradas.add(tarefa);
             }
         }
         for (Tarefa tarefa : tarefasConcluidas) { // Verifica tarefas concluídas
             if (tarefa.getTitulo().toLowerCase().contains(stringChave) ||
-                tarefa.getDescricao().toLowerCase().contains(stringChave) ||
-                tarefa.getCategoria().toLowerCase().contains(stringChave) ||
-                contemPalavraSubtarefas(tarefa.getSubtarefas(), stringChave)) {
+                    tarefa.getDescricao().toLowerCase().contains(stringChave) ||
+                    tarefa.getCategoria().toLowerCase().contains(stringChave) ||
+                    contemPalavraSubtarefas(tarefa.getSubtarefas(), stringChave)) {
                 tarefasEncontradas.add(tarefa);
             }
         }
@@ -275,66 +297,45 @@ public class GerenciadorTarefas {
 
     private void filtrarTarefasPorCategoria() {
         System.out.println("Digite a categoria desejada: ");
-        String categoria = ScannerGlobal.nextLine();
-        System.out.println("=== Tarefas com a categoria '" + categoria + "' ===");
+        String pegacategoria = ScannerGlobal.nextLine();
+        System.out.println("=== Tarefas com a categoria '" + pegacategoria + "' ===");
         boolean encontrouTarefas = false;
         for (Tarefa tarefa : this.tarefasPendentes) {
-            if (tarefa.getCategoria().equalsIgnoreCase(categoria)) {
+            if (tarefa.getCategoria().equalsIgnoreCase(pegacategoria)) {
                 encontrouTarefas = true;
                 exibirTarefaComSubtarefas(tarefa, 0);
             }
         }
         for (Tarefa tarefa : this.tarefasConcluidas) {
-            if (tarefa.getCategoria().equalsIgnoreCase(categoria)) {
+            if (tarefa.getCategoria().equalsIgnoreCase(pegacategoria)) {
                 encontrouTarefas = true;
                 exibirTarefaComSubtarefas(tarefa, 0);
             }
         }
         if (!encontrouTarefas) {
-            System.out.println("Não há tarefas com a categoria '" + categoria + "'.");
+            System.out.println("Não há tarefas com a categoria '" + pegacategoria + "'.");
         }
     }
 
     private void editarTarefa() {
-        System.out.println("\n=== Editor de Tarefas ===\n");
-        for (Tarefa tarefa : this.tarefasPendentes) {
-            System.out.println("=====\n" + tarefa.getId() + " - " + tarefa.getTitulo() + "\nDescrição: "
-                    + tarefa.getDescricao() + "\nCategoria: " + tarefa.getCategoria() + "\n=====\n");
-        }
+        exibirTarefasPendentes();
         System.out.println("Digite o ID da tarefa que deseja editar: ");
-        int id = ScannerGlobal.nextInt();
+        int id = lerNumeroInteiro();
         boolean tarefaEncontrada = false;
-
         for (Tarefa tarefa : this.tarefasPendentes) {
             if (tarefa.getId() == id) {
-                System.out.println("=== Editar Tarefa ===");
-                System.out.println("1. Editar título");
-                System.out.println("2. Editar descrição");
-                System.out.println("3. Editar categoria");
-                System.out.print("Escolha uma opção: \n");
+                exibirMenuEdicaoTarefa();
                 int opcao = ScannerGlobal.nextInt();
 
                 switch (opcao) {
                     case 1:
-                        System.out.println("Digite o novo título da tarefa: ");
-                        ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
-                        String novoTitulo = ScannerGlobal.nextLine();
-                        tarefa.setTitulo(novoTitulo);
-                        System.out.println("Título atualizado com sucesso!\n");
+                        editarTituloTarefa(tarefa);
                         break;
                     case 2:
-                        System.out.println("Digite a nova descrição da tarefa: ");
-                        ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
-                        String novaDescricao = ScannerGlobal.nextLine();
-                        tarefa.setDescricao(novaDescricao);
-                        System.out.println("Descrição atualizada com sucesso!\n");
+                        editarDescricaoTarefa(tarefa);
                         break;
                     case 3:
-                        System.out.println("Digite a nova categoria da tarefa: ");
-                        ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
-                        String novaCategoria = ScannerGlobal.nextLine();
-                        tarefa.setCategoria(novaCategoria);
-                        System.out.println("Categoria atualizada com sucesso!\n");
+                        editarCategoriaTarefa(tarefa);
                         break;
                     default:
                         System.out.println("Opção inválida.");
@@ -347,6 +348,38 @@ public class GerenciadorTarefas {
         if (!tarefaEncontrada) {
             System.out.println("Tarefa não encontrada.");
         }
+    }
+
+    private void exibirMenuEdicaoTarefa() {
+        System.out.println("=== Editar Tarefa ===");
+        System.out.println("1. Editar título");
+        System.out.println("2. Editar descrição");
+        System.out.println("3. Editar categoria");
+        System.out.print("Escolha uma opção: \n");
+    }
+
+    private void editarTituloTarefa(Tarefa tarefa) {
+        System.out.println("Digite o novo título da tarefa: ");
+        ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
+        String novoTitulo = ScannerGlobal.nextLine();
+        tarefa.setTitulo(novoTitulo);
+        System.out.println("Título atualizado com sucesso!");
+    }
+
+    private void editarDescricaoTarefa(Tarefa tarefa) {
+        System.out.println("Digite a nova descrição da tarefa: ");
+        ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
+        String novaDescricao = ScannerGlobal.nextLine();
+        tarefa.setDescricao(novaDescricao);
+        System.out.println("Descrição atualizada com sucesso!");
+    }
+
+    private void editarCategoriaTarefa(Tarefa tarefa) {
+        System.out.println("Digite a nova categoria da tarefa: ");
+        ScannerGlobal.nextLine(); // Consumir a quebra de linha pendente
+        String novaCategoria = ScannerGlobal.nextLine();
+        tarefa.setCategoria(novaCategoria);
+        System.out.println("Categoria atualizada com sucesso!");
     }
 
     // métodos para salvar as tarefas com as subtarefas do usuário em arquivos
@@ -384,31 +417,41 @@ public class GerenciadorTarefas {
 
     // método em que cadastra ou faz o login do usuário
     private String cadastrarUsuario() {
+        System.out.println("Olá! Seja muito bem-vindo ao gerenciador de tarefas.\n");
         System.out.println("Digite o seu nome de usuário: ");
         String nomeUsuario = ScannerGlobal.nextLine();
-        String nomeArquivoSenha = nomeUsuario + "senha.txt";
+        String nomeArquivoSenha = nomeUsuario + "senha.poo";
         File arquivoSenha = new File("senhas/" + nomeArquivoSenha);
 
         if (arquivoSenha.exists()) {
-            System.out.println("Bem-vindo de volta, " + nomeUsuario + "!");
-            // Loop para verificar a senha
-            while (true) {
-                if (verificarSenha(arquivoSenha)) {
-                    System.out.println("Senha correta!");
-                    break; // Sai do loop caso a senha esteja correta
-                } else {
-                    System.out.println("Senha incorreta!");
-                    System.out.println("Digite a senha correta: ");
-                    // Ler a senha digitada pelo usuário
-                    String senhaDigitada = ScannerGlobal.nextLine();
-                    // Comparar a senha digitada com a senha armazenada no arquivo
-                    if (verificarSenhaDigitada(arquivoSenha, senhaDigitada)) {
+            System.out.println("Usuário já existente. Deseja prosseguir para a senha? (S/N)\n(digite 'S' para digitar a sua senha ou 'N' para voltar e digitar outro usuario e/ou criar um novo.)");
+            String opcao = ScannerGlobal.nextLine();
+            if (opcao.equalsIgnoreCase("S")) {
+                System.out.println("Bem-vindo de volta," + nomeUsuario + "!");
+                // Loop para verificar a senha
+                while (true) {
+                    if (verificarSenha(arquivoSenha)) {
                         System.out.println("Senha correta!");
                         break; // Sai do loop caso a senha esteja correta
+                    } else {
+                        System.out.println("Senha incorreta!");
+                        System.out.println("Digite a senha correta: ");
+                        // Ler a senha digitada pelo usuário
+                        String senhaDigitada = ScannerGlobal.nextLine();
+                        // Comparar a senha digitada com a senha armazenada no arquivo
+                        if (verificarSenhaDigitada(arquivoSenha, senhaDigitada)) {
+                            System.out.println("Senha correta!");
+                            break; // Sai do loop caso a senha esteja correta
+                        }
                     }
                 }
+                return nomeUsuario;
+            } else if (opcao.equalsIgnoreCase("N")) {
+                return cadastrarUsuario(); // Chama o método novamente para digitar outro nome de usuário
+            } else {
+                System.out.println("Opção inválida. Por favor, digite 'S' para prosseguir ou 'N' para voltar.");
+                return cadastrarUsuario(); // Chama o método novamente para obter uma opção válida
             }
-            return nomeUsuario;
         } else {
             System.out.println("Bem-vindo, " + nomeUsuario + "!");
             // Solicitar a senha do usuário
@@ -470,7 +513,7 @@ public class GerenciadorTarefas {
             String descricao = campos[3];
             boolean status = Boolean.parseBoolean(campos[5]);
             LocalDateTime dataCriacao = LocalDateTime.parse(campos[4],
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+                    DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
             LocalDateTime dataConclusao = null;
             String categoria = campos[6];
 
@@ -509,8 +552,24 @@ public class GerenciadorTarefas {
                 return;
             }
         }
-    } 
-    
+    }
+
+    // método para que o scanner aceite apenas numeros inteiros e não quebre o código ao digitar uma letra
+    private int lerNumeroInteiro() {
+        int numero;
+        while (true) {
+            if (ScannerGlobal.hasNextInt()) {
+                numero = ScannerGlobal.nextInt();
+                break;
+            } else {
+                System.out.println("Apenas números são aceitos. Por favor, digite novamente: ");
+                ScannerGlobal.nextLine(); // Limpar o valor inválido digitado
+            }
+        }
+        ScannerGlobal.nextLine(); // Consumir a nova linha pendente
+        return numero;
+    }
+
     // método que cria a pasta usuário para salvar as tarefas de cada usuário
     private void criarPasta() {
         File folder = new File("usuarios");
