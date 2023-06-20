@@ -58,7 +58,6 @@ public class GerenciadorTarefas {
         System.out.println("Usuário já existente. Deseja prosseguir para a senha? (S/N)");
         System.out.println("(Digite 'S' para digitar a sua senha ou 'N' para voltar e digitar outro usuário e/ou criar um novo.)");
         String opcao = ScannerGlobal.nextLine();
-
         if (opcao.equalsIgnoreCase("S")) {
             System.out.println("Bem-vindo de volta, " + nomeUsuario + "!");
             while (true) {
@@ -89,7 +88,6 @@ public class GerenciadorTarefas {
         System.out.println("Bem-vindo, " + nomeUsuario + "!");
         System.out.println("Digite a sua senha: ");
         String senhaUsuario = ScannerGlobal.nextLine();
-
         try {
             arquivoSenha.createNewFile();
             FileWriter writer = new FileWriter(arquivoSenha);
@@ -99,7 +97,6 @@ public class GerenciadorTarefas {
         } catch (IOException e) {
             System.out.println("Erro ao criar o arquivo de senha.");
         }
-
         return nomeUsuario;
     }
 
