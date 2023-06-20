@@ -55,8 +55,8 @@ public class GerenciadorTarefas {
 
     // Método para fazer login do usuário existente
     private String fazerLogin(String nomeUsuario, File arquivoSenha) {
-        System.out.println(
-                "Usuário já existente. Deseja prosseguir para a senha? (S/N)\n(digite 'S' para digitar a sua senha ou 'N' para voltar e digitar outro usuário e/ou criar um novo.)");
+        System.out.println("Usuário já existente. Deseja prosseguir para a senha? (S/N)");
+        System.out.println("(Digite 'S' para digitar a sua senha ou 'N' para voltar e digitar outro usuário e/ou criar um novo.)");
         String opcao = ScannerGlobal.nextLine();
 
         if (opcao.equalsIgnoreCase("S")) {
