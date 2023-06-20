@@ -20,6 +20,7 @@ public class ScannerGlobal {
     public static void close() {
         scanner.close();
     }
+    
     public static boolean hasNextInt(){
         return scanner.hasNextInt();
     }

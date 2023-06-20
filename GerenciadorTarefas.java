@@ -26,7 +26,7 @@ public class GerenciadorTarefas {
     public void iniciarGerenciador() {
         criarPastaSenhas();
         criarPasta();
-        String nomeUsuario = cadastrarUsuario();
+        String nomeUsuario = cadastroLoginUsuario();
         String nomeArquivo = nomeUsuario + ".poo";
         try {
             System.out.println("\nCarregando Tarefas...\n");
@@ -36,6 +36,100 @@ public class GerenciadorTarefas {
             System.out.println("Não foi possível Carregar suas Tarefas e/ou não existem.");
         }
         exibirMenu(nomeArquivo);
+    }
+
+    // Método para cadastrar ou fazer login do usuário
+    private String cadastroLoginUsuario() {
+        System.out.println("Olá! Seja muito bem-vindo ao gerenciador de tarefas.\n");
+        System.out.println("Digite o seu nome de usuário: ");
+        String nomeUsuario = ScannerGlobal.nextLine();
+        String nomeArquivoSenha = nomeUsuario + "senha.poo";
+        File arquivoSenha = new File("senhas/" + nomeArquivoSenha);
+
+        if (arquivoSenha.exists()) {
+            return fazerLogin(nomeUsuario, arquivoSenha);
+        } else {
+            return cadastrarNovoUsuario(nomeUsuario, arquivoSenha);
+        }
+    }
+
+    // Método para fazer login do usuário existente
+    private String fazerLogin(String nomeUsuario, File arquivoSenha) {
+        System.out.println(
+                "Usuário já existente. Deseja prosseguir para a senha? (S/N)\n(digite 'S' para digitar a sua senha ou 'N' para voltar e digitar outro usuário e/ou criar um novo.)");
+        String opcao = ScannerGlobal.nextLine();
+
+        if (opcao.equalsIgnoreCase("S")) {
+            System.out.println("Bem-vindo de volta, " + nomeUsuario + "!");
+            while (true) {
+                if (verificarSenha(arquivoSenha)) {
+                    System.out.println("Senha correta!");
+                    break;
+                } else {
+                    System.out.println("Senha incorreta!");
+                    System.out.println("Digite a senha correta: ");
+                    String senhaDigitada = ScannerGlobal.nextLine();
+                    if (verificarSenhaDigitada(arquivoSenha, senhaDigitada)) {
+                        System.out.println("Senha correta!");
+                        break;
+                    }
+                }
+            }
+            return nomeUsuario;
+        } else if (opcao.equalsIgnoreCase("N")) {
+            return cadastroLoginUsuario();
+        } else {
+            System.out.println("Opção inválida. Por favor, digite 'S' para prosseguir ou 'N' para voltar.");
+            return cadastroLoginUsuario();
+        }
+    }
+
+    // Método para cadastrar um novo usuário
+    private String cadastrarNovoUsuario(String nomeUsuario, File arquivoSenha) {
+        System.out.println("Bem-vindo, " + nomeUsuario + "!");
+        System.out.println("Digite a sua senha: ");
+        String senhaUsuario = ScannerGlobal.nextLine();
+
+        try {
+            arquivoSenha.createNewFile();
+            FileWriter writer = new FileWriter(arquivoSenha);
+            writer.write(senhaUsuario);
+            writer.close();
+            System.out.println("Usuário cadastrado com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Erro ao criar o arquivo de senha.");
+        }
+
+        return nomeUsuario;
+    }
+
+    // métodos para verificar senha e senha digitada
+    private boolean verificarSenha(File arquivoSenha) {
+        try {
+            // Ler a senha do arquivo
+            FileReader reader = new FileReader(arquivoSenha);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            String senhaArmazenada = bufferedReader.readLine();
+            bufferedReader.close();
+            // Solicitar a senha atual
+            System.out.println("Digite a senha atual: ");
+            String senhaAtual = ScannerGlobal.nextLine();
+            // Verificar se as senhas coincidem
+            return senhaArmazenada.equals(senhaAtual);
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de senha.");
+        }
+        return false;
+    }
+
+    private boolean verificarSenhaDigitada(File arquivoSenha, String senhaDigitada) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(arquivoSenha))) {
+            String senhaArmazenada = reader.readLine();
+            return senhaDigitada.equals(senhaArmazenada);
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo de senha.");
+        }
+        return false;
     }
 
     // método que exibe o menu do gerenciador de tarefas
@@ -146,7 +240,7 @@ public class GerenciadorTarefas {
         int idTarefaPai;
         while (true) {
             System.out.print("Digite o ID da tarefa à qual deseja adicionar a subtarefa: ");
-            idTarefaPai = lerNumeroInteiro();
+            idTarefaPai = verificaNumeroInteiro();
             if (verificarIdTarefaPai(idTarefaPai)) {
                 break;
             } else {
@@ -178,7 +272,7 @@ public class GerenciadorTarefas {
     private void concluirTarefa() {
         exibirTarefasPendentes();
         System.out.print("Digite o ID da tarefa que deseja concluir: ");
-        int id = lerNumeroInteiro();
+        int id = verificaNumeroInteiro();
         ScannerGlobal.nextLine(); // Consumir a nova linha pendente
         boolean tarefaEncontrada = false;
         for (Tarefa tarefa : this.tarefasPendentes) {
@@ -221,19 +315,18 @@ public class GerenciadorTarefas {
         }
     }
 
+    // métodos para exibição das tarefas com as subtarefas
     private void exibirTarefaComSubtarefas(Tarefa tarefa, int nivel) {
         StringBuilder prefixo = new StringBuilder();
         for (int i = 0; i < nivel; i++) {
             prefixo.append("  ");
         }
-
         if (!tarefa.isStatus()) {
             imprimirTarefa(tarefa, prefixo.toString(), "Data de Criação");
         } else {
             imprimirTarefa(tarefa, prefixo.toString(), "Data de conclusão");
         }
         List<Tarefa> subtarefas = tarefa.getSubtarefas();
-
         for (Tarefa subtarefa : subtarefas) {
             System.out.println(prefixo.toString() + "======Subtarefa======\n" + prefixo.toString()
                     + "  ID: " + subtarefa.getId()
@@ -254,6 +347,7 @@ public class GerenciadorTarefas {
                 + "\n" + prefixo + "===========");
     }
 
+    // métodos para buscar uma palavra chave nas tarefas e/ou subtarefas
     private List<Tarefa> buscarPalavra() {
         System.out.print("Digite a(s) palavra(s) que deseja buscar: ");
         String stringChave = ScannerGlobal.nextLine().toLowerCase(); // Converter para minúsculas
@@ -295,6 +389,7 @@ public class GerenciadorTarefas {
         }
     }
 
+    // método para filtrar tarefas por categoria
     private void filtrarTarefasPorCategoria() {
         System.out.println("Digite a categoria desejada: ");
         String pegacategoria = ScannerGlobal.nextLine();
@@ -317,10 +412,11 @@ public class GerenciadorTarefas {
         }
     }
 
+    /* métodos para editar uma tarefa pendente */
     private void editarTarefa() {
         exibirTarefasPendentes();
         System.out.println("Digite o ID da tarefa que deseja editar: ");
-        int id = lerNumeroInteiro();
+        int id = verificaNumeroInteiro();
         boolean tarefaEncontrada = false;
         for (Tarefa tarefa : this.tarefasPendentes) {
             if (tarefa.getId() == id) {
@@ -415,91 +511,6 @@ public class GerenciadorTarefas {
         }
     }
 
-    // método em que cadastra ou faz o login do usuário
-    private String cadastrarUsuario() {
-        System.out.println("Olá! Seja muito bem-vindo ao gerenciador de tarefas.\n");
-        System.out.println("Digite o seu nome de usuário: ");
-        String nomeUsuario = ScannerGlobal.nextLine();
-        String nomeArquivoSenha = nomeUsuario + "senha.poo";
-        File arquivoSenha = new File("senhas/" + nomeArquivoSenha);
-
-        if (arquivoSenha.exists()) {
-            System.out.println("Usuário já existente. Deseja prosseguir para a senha? (S/N)\n(digite 'S' para digitar a sua senha ou 'N' para voltar e digitar outro usuario e/ou criar um novo.)");
-            String opcao = ScannerGlobal.nextLine();
-            if (opcao.equalsIgnoreCase("S")) {
-                System.out.println("Bem-vindo de volta," + nomeUsuario + "!");
-                // Loop para verificar a senha
-                while (true) {
-                    if (verificarSenha(arquivoSenha)) {
-                        System.out.println("Senha correta!");
-                        break; // Sai do loop caso a senha esteja correta
-                    } else {
-                        System.out.println("Senha incorreta!");
-                        System.out.println("Digite a senha correta: ");
-                        // Ler a senha digitada pelo usuário
-                        String senhaDigitada = ScannerGlobal.nextLine();
-                        // Comparar a senha digitada com a senha armazenada no arquivo
-                        if (verificarSenhaDigitada(arquivoSenha, senhaDigitada)) {
-                            System.out.println("Senha correta!");
-                            break; // Sai do loop caso a senha esteja correta
-                        }
-                    }
-                }
-                return nomeUsuario;
-            } else if (opcao.equalsIgnoreCase("N")) {
-                return cadastrarUsuario(); // Chama o método novamente para digitar outro nome de usuário
-            } else {
-                System.out.println("Opção inválida. Por favor, digite 'S' para prosseguir ou 'N' para voltar.");
-                return cadastrarUsuario(); // Chama o método novamente para obter uma opção válida
-            }
-        } else {
-            System.out.println("Bem-vindo, " + nomeUsuario + "!");
-            // Solicitar a senha do usuário
-            System.out.println("Digite a sua senha: ");
-            String senhaUsuario = ScannerGlobal.nextLine();
-            try {
-                // Criar o arquivo de senha
-                arquivoSenha.createNewFile();
-                // Escrever a senha no arquivo
-                FileWriter writer = new FileWriter(arquivoSenha);
-                writer.write(senhaUsuario);
-                writer.close();
-                System.out.println("Usuário cadastrado com sucesso!");
-            } catch (IOException e) {
-                System.out.println("Erro ao criar o arquivo de senha.");
-            }
-            return nomeUsuario;
-        }
-    }
-
-    private boolean verificarSenha(File arquivoSenha) {
-        try {
-            // Ler a senha do arquivo
-            FileReader reader = new FileReader(arquivoSenha);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            String senhaArmazenada = bufferedReader.readLine();
-            bufferedReader.close();
-            // Solicitar a senha atual
-            System.out.println("Digite a senha atual: ");
-            String senhaAtual = ScannerGlobal.nextLine();
-            // Verificar se as senhas coincidem
-            return senhaArmazenada.equals(senhaAtual);
-        } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo de senha.");
-        }
-        return false;
-    }
-
-    private boolean verificarSenhaDigitada(File arquivoSenha, String senhaDigitada) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(arquivoSenha))) {
-            String senhaArmazenada = reader.readLine();
-            return senhaDigitada.equals(senhaArmazenada);
-        } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo de senha.");
-        }
-        return false;
-    }
-
     // método para carregar as tarefas do usuário existente
     private void carregarTarefas(String nomeArquivo) throws IOException {
         BufferedReader leitor = new BufferedReader(new FileReader("usuarios/" + nomeArquivo));
@@ -554,8 +565,9 @@ public class GerenciadorTarefas {
         }
     }
 
-    // método para que o scanner aceite apenas numeros inteiros e não quebre o código ao digitar uma letra
-    private int lerNumeroInteiro() {
+    // método para que o scanner aceite apenas numeros inteiros e não quebre o
+    // código ao digitar uma letra
+    private int verificaNumeroInteiro() {
         int numero;
         while (true) {
             if (ScannerGlobal.hasNextInt()) {
@@ -570,7 +582,8 @@ public class GerenciadorTarefas {
         return numero;
     }
 
-    // método que cria a pasta usuário para salvar as tarefas de cada usuário
+    // métodos que criam as pastas usuário e senha para salvar as tarefas de cada
+    // usuário
     private void criarPasta() {
         File folder = new File("usuarios");
         if (!folder.exists()) {
