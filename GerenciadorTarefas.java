@@ -270,7 +270,6 @@ public class GerenciadorTarefas {
         exibirTarefasPendentes();
         System.out.print("Digite o ID da tarefa que deseja concluir: ");
         int id = verificaNumeroInteiro();
-        ScannerGlobal.nextLine(); // Consumir a nova linha pendente
         boolean tarefaEncontrada = false;
         for (Tarefa tarefa : this.tarefasPendentes) {
             if (tarefa.getId() == id) {
